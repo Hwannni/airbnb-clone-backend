@@ -1,6 +1,5 @@
 from django.db import models
 
-
 # Create your models here.
 class House(models.Model):
     """Model Definition for House"""
