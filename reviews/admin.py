@@ -10,16 +10,16 @@ class WordFilter(admin.SimpleListFilter):
     def lookups(self, request, model_admin):
         return [
             ("good", "Good"),
-            ("great", "Great"),
-            ("awesome", "Awesome"),
+            ("bad", "Bad"),
         ]
 
     def queryset(self, request, reviews):
         word = self.value()
-        if word:
-            return reviews.filter(payload__contains=word)
-        else:
-            reviews
+        match = {
+            "good": reviews.filter(rating__gte=3),
+            "bad": reviews.filter(rating__lt=3),
+        }
+        return match.get(word, reviews)
 
 
 @admin.register(Review)
