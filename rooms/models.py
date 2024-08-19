@@ -1,6 +1,7 @@
 from django.db import models
 from common.models import CommonModel
 
+
 class Room(CommonModel):
     """Room Model Definition"""
 
@@ -8,6 +9,7 @@ class Room(CommonModel):
         ENTIRE_PLACE = ("entire_place", "Entire Place")
         PRIVATE_ROOM = ("private_room", "Private Room")
         SHARED_ROOM = "shared_room", "Shared Room"
+
     name = models.CharField(
         max_length=180,
         default="",
@@ -50,11 +52,22 @@ class Room(CommonModel):
         on_delete=models.SET_NULL,
         related_name="rooms",
     )
+
     def __str__(room) -> str:
         return room.name
 
     def total_amenities(room):
         return room.amenities.count()
+
+    def rating(room):
+        count = room.reviews.count()
+        if count == 0:
+            return "No Reviews"
+        else:
+            total_rating = 0
+            for review in room.reviews.all().values("rating"):
+                total_rating += review["rating"]
+            return round(total_rating / count, 2)
 
 
 class Amenity(CommonModel):
@@ -71,6 +84,6 @@ class Amenity(CommonModel):
 
     def __str__(self) -> str:
         return self.name
-    
+
     class Meta:
         verbose_name_plural = "Amenities"
