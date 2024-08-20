@@ -8,7 +8,7 @@ def see_all_rooms(request):
     rooms = Room.objects.all()
     return render(
         request,
-        "all_rooms.html",
+        "all_rooms.htm",
         {
             "rooms": rooms,
             "title": "Hello! this title comes from django!",
