@@ -8,4 +8,7 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         # 모든 필드를 허용
-        fields = "__all__"
+        fields = (
+            "name",
+            "kind",
+        )
