@@ -1,8 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_204_NO_CONTENT
 from rest_framework.response import Response
-from rest_framework.exceptions import NotFound, NotAuthenticated
+from rest_framework.exceptions import NotFound, NotAuthenticated, ParseError
 from .models import Amenity, Room
+from categories.models import Category
 from .serializers import AmenitySerializer, RoomListSerializer, RoomDatailSerializer
 
 
@@ -83,9 +84,21 @@ class Rooms(APIView):
         if request.user.is_authenticated:
             serializer = RoomDatailSerializer(data=request.data)
             if serializer.is_valid():
+                category_pk = request.data.get("category")
+                if not category_pk:
+                    raise ParseError
+                try:
+                    category = Category.objects.get(pk=category_pk)
+                    if category.kind == Category.CategoryKindChoices.EXPERIENCES:
+                        raise ParseError
+                except Category.DoesNotExist:
+                    raise ParseError
                 # serializer에게 owner가 user라는 것을 알려준다.
                 # owner 데이터는 필수이기 때문에 반드시 이 작업을 해야한다.
-                room = serializer.save(owner=request.user)
+                room = serializer.save(
+                    owner=request.user,
+                    category=category,
+                )
                 serializer = RoomDatailSerializer(room)
                 return Response(serializer.data)
             else:
