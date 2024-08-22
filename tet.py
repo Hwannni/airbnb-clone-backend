@@ -9,6 +9,7 @@
     "description": "DRF is Great",
     "address": "Seoul, Korea",
     "pet_friendly": true,
-    "category": 2,
+    "category": 3,
+    "amenities": [1,2,3,4],
     "kind": "private_room"
 }

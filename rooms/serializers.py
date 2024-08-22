@@ -33,8 +33,9 @@ class RoomDatailSerializer(ModelSerializer):
         fields = "__all__"
 
     # save() 함수 호출 시 create() 함수 작동
-    def create(self, validated_data):
-        return Room.objects.create(**validated_data)
+    # def create(self, validated_data):
+    # print(validated_data)
+    # return # Room.objects.create(**validated_data)
 
 
 class RoomListSerializer(ModelSerializer):
