@@ -29,6 +29,7 @@ class RoomDetailSerializer(serializers.ModelSerializer):
     )
 
     rating = serializers.SerializerMethodField()
+    is_owner = serializers.SerializerMethodField()
 
     class Meta:
         model = Room
@@ -37,10 +38,16 @@ class RoomDetailSerializer(serializers.ModelSerializer):
     def get_rating(self, room):
         return room.rating()
 
+    # views의 context를 통해 request 데이터를 받아와 함수 실행
+    def get_is_owner(self, room):
+        request = self.context["request"]
+        return room.owner == request.user
+
 
 class RoomListSerializer(serializers.ModelSerializer):
 
     rating = serializers.SerializerMethodField()
+    is_owner = serializers.SerializerMethodField()
 
     class Meta:
         model = Room
@@ -51,10 +58,12 @@ class RoomListSerializer(serializers.ModelSerializer):
             "city",
             "price",
             "rating",
+            "is_owner",
         )
 
     def get_rating(self, room):
         return room.rating()
 
-        # ID대신 object로 확장
-        # depth = 1
+    def get_is_owner(self, room):
+        request = self.context["request"]
+        return room.owner == request.user
