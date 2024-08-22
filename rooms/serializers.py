@@ -1,10 +1,10 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 from .models import Amenity, Room
 from users.serializers import TinyUserSerializer
 from categories.serializers import CategorySerializer
 
 
-class AmenitySerializer(ModelSerializer):
+class AmenitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Amenity
         fields = (
@@ -13,7 +13,7 @@ class AmenitySerializer(ModelSerializer):
         )
 
 
-class RoomDetailSerializer(ModelSerializer):
+class RoomDetailSerializer(serializers.ModelSerializer):
 
     # user의 serializer 가져오기
     # owner 정보는 사용자가 마음대로 수정하면 안된다. --> read_only=True
@@ -28,17 +28,20 @@ class RoomDetailSerializer(ModelSerializer):
         read_only=True,
     )
 
+    rating = serializers.SerializerMethodField()
+
     class Meta:
         model = Room
         fields = "__all__"
 
-    # save() 함수 호출 시 create() 함수 작동
-    # def create(self, validated_data):
-    # print(validated_data)
-    # return # Room.objects.create(**validated_data)
+    def get_rating(self, room):
+        return room.rating()
 
 
-class RoomListSerializer(ModelSerializer):
+class RoomListSerializer(serializers.ModelSerializer):
+
+    rating = serializers.SerializerMethodField()
+
     class Meta:
         model = Room
         fields = (
@@ -47,6 +50,11 @@ class RoomListSerializer(ModelSerializer):
             "country",
             "city",
             "price",
+            "rating",
         )
+
+    def get_rating(self, room):
+        return room.rating()
+
         # ID대신 object로 확장
-        depth = 1
+        # depth = 1
