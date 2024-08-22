@@ -1,5 +1,5 @@
 
-
+{
     "name": "House created with DRF",
     "country": "한국",
     "city": "서울",
@@ -10,3 +10,4 @@
     "address": "Seoul, Korea",
     "pet_friendly": true,
     "kind": "private_room"
+}
