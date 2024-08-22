@@ -16,7 +16,8 @@ class AmenitySerializer(ModelSerializer):
 class RoomDatailSerializer(ModelSerializer):
 
     # user의 serializer 가져오기
-    owner = TinyUserSerializer()
+    # owner 정보는 사용자가 마음대로 수정하면 안된다.
+    owner = TinyUserSerializer(read_only=True)
     amenities = AmenitySerializer(many=True)
     category = CategorySerializer()
 
