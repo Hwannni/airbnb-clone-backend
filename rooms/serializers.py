@@ -13,7 +13,7 @@ class AmenitySerializer(ModelSerializer):
         )
 
 
-class RoomDatailSerializer(ModelSerializer):
+class RoomDetailSerializer(ModelSerializer):
 
     # user의 serializer 가져오기
     # owner 정보는 사용자가 마음대로 수정하면 안된다. --> read_only=True
