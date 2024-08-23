@@ -241,7 +241,7 @@ class RoomAmenities(APIView):
             page = int(page)
         except ValueError:
             page = 1
-        page_size = 2
+        page_size = 3
         start = (page - 1) * page_size
         end = start + page_size
         room = self.get_object(pk)
