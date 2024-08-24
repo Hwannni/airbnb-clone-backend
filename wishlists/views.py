@@ -85,6 +85,8 @@ class WishlistToggle(APIView):
     def put(self, request, pk, room_pk):
         wishlist = self.get_list(pk, request.user)
         room = self.get_room(room_pk)
+        # wishlist.rooms이 user가 등록/삭제하려는 pk랑 일치하는 방을
+        # 가지고 있는지 확인하는 조건문
         if wishlist.rooms.filter(pk=room.pk).exists():
             wishlist.rooms.remove(room)
         else:
