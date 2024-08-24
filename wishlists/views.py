@@ -46,7 +46,10 @@ class WishlistDetail(APIView):
 
     def get(self, request, pk):
         wishlist = self.get_object(pk, request.user)
-        serializer = WishlistSerializer(wishlist)
+        serializer = WishlistSerializer(
+            wishlist,
+            context={"request": request},
+        )
         return Response(serializer.data)
 
     def delete(self, request, pk):
@@ -63,7 +66,10 @@ class WishlistDetail(APIView):
         )
         if serializer.is_valid():
             wishlist = serializer.save()
-            serializer = WishlistSerializer(wishlist)
+            serializer = WishlistSerializer(
+                wishlist,
+                context={"request": request},
+            )
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
@@ -75,13 +81,13 @@ class WishlistToggle(APIView):
             return Wishlist.objects.get(pk=pk, user=user)
         except Wishlist.DoesNotExist:
             raise NotFound
-        
+
     def get_room(self, pk):
         try:
             return Room.objects.get(pk=pk)
         except Room.DoesNotExist:
             raise NotFound
-        
+
     def put(self, request, pk, room_pk):
         wishlist = self.get_list(pk, request.user)
         room = self.get_room(room_pk)
