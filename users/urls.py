@@ -7,10 +7,10 @@ urlpatterns = [
     path("", views.Users.as_view()),
     path("me", views.Me.as_view()),
     path("change-password", views.ChangePassword.as_view()),
-    path("log-in", views.LogIn.as_view()),
-    path("log-out", views.LogOut.as_view()),
-    path("token-login", obtain_auth_token),
-    path("jwt-login", views.JWTLogIn.as_view()),
+    path("log-in", views.LogIn.as_view()), # 직접 구현한 로그인
+    path("log-out", views.LogOut.as_view()), # 직접 구현한 로그아웃
+    path("token-login", obtain_auth_token), # Django Rest Framework의 토큰 인증
+    path("jwt-login", views.JWTLogIn.as_view()), # JWT를 이용한 토큰 인증
     # @는 인스타에서도 사용하니까 그냥 붙이는거.
     path("@<str:username>", views.PublicUser.as_view()),
     path("@<str:username>/rooms", views.UserRooms.as_view()),
