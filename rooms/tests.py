@@ -5,7 +5,6 @@ from . import models
 class TestAmenities(APITestCase):
     NAME = "Amenity Test"
     DESC = "Amenity Des"
-
     URL = "/api/v1/rooms/amenities/"
 
     def setUp(self):
@@ -15,11 +14,8 @@ class TestAmenities(APITestCase):
         )
 
     def test_all_amenities(self):
-
-        response = self.client.get("/api/v1/rooms/amenities/")
         response = self.client.get(self.URL)
         data = response.json()
-
         self.assertEqual(
             response.status_code,
             200,
@@ -43,10 +39,8 @@ class TestAmenities(APITestCase):
         )
 
     def test_create_amenity(self):
-
         new_amenity_name = "New Amenity"
         new_amenity_description = "New Amenity desc."
-
         response = self.client.post(
             self.URL,
             data={
@@ -69,9 +63,48 @@ class TestAmenities(APITestCase):
             data["description"],
             new_amenity_description,
         )
-
         response = self.client.post(self.URL)
         data = response.json()
 
         self.assertEqual(response.status_code, 400)
         self.assertIn("name", data)
+
+
+class TestAmenity(APITestCase):
+
+    NAME = "Test Amenity"
+    DESC = "Test Dsc"
+
+    def setUp(self):
+        models.Amenity.objects.create(
+            name=self.NAME,
+            description=self.DESC,
+        )
+
+    def test_amenity_not_found(self):
+        response = self.client.get("/api/v1/rooms/amenities/2")
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_amenity(self):
+
+        response = self.client.get("/api/v1/rooms/amenities/1")
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(
+            data["name"],
+            self.NAME,
+        )
+        self.assertEqual(
+            data["description"],
+            self.DESC,
+        )
+
+    def test_delete_amenity(self):
+
+        response = self.client.delete("/api/v1/rooms/amenities/1")
+
+        self.assertEqual(response.status_code, 204)
