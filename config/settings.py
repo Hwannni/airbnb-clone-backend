@@ -181,3 +181,6 @@ CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:3000"]
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]
+
+### 깃허브 로그인 기능 일시 중지
+# GH_SECRET = env("GH_SECRET")
